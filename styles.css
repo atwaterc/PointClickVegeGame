@@ -1,0 +1,29 @@
+body {
+  background-image: url('images/farmbg.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.start-screen {
+  position: absolute;
+  font-size: 5vmin;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.vege {
+  animation: fall linear forwards;
+  position: absolute;
+  height: 100px;
+  width: auto;
+  top: -20px;
+  animation-delay: 0s;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(105vh);
+  }
+}
