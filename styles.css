@@ -3,6 +3,7 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   overflow: hidden;
+  user-select: none;
 }
 
 .start-screen {
@@ -11,6 +12,20 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.score {
+  position: absolute;
+  font-size: 10vmin;
+  bottom: 0;
+  right: 50%;
+}
+
+.timer {
+  position: absolute;
+  font-size: 10vmin;
+  bottom: 0;
+  left: 90%;
 }
 
 .vege {
@@ -26,4 +41,23 @@ body {
   to {
     transform: translateY(105vh);
   }
+}
+
+.locust {
+  animation: fly 4s linear forwards;
+  position: absolute;
+  height: 100px;
+  width: auto;
+  right: -20px;
+  animation-delay: 0s;
+}
+
+@keyframes fly {
+  to {
+    transform: translateX(-105vw);
+  }
+}
+
+.hide {
+  display: none;
 }
