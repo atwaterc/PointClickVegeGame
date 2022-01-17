@@ -17,7 +17,5 @@ export function createLocust() {
         scoreDiv.textContent = score
     }
 
-    setTimeout(() => {
-        loc.remove()
-    }, 5000)
+    return loc
 }

@@ -1,11 +1,19 @@
 import { createVegetable } from './vegetables.js'
 import { createLocust } from './evillocust.js'
+import { Game } from './game.js'
 
 
 const startDiv = document.getElementById('start-screen')
 const timerDiv = document.getElementById('timer')
+const pausedDiv = document.getElementById('pause-screen')
+const scoreDiv = document.getElementById('score')
+
+let vegeGameUnits = []
 
 let time = timerDiv.textContent
+let isPaused = false
+
+let gameObj
 
 document.addEventListener("click", startGame, { once: true})
 
@@ -19,6 +27,7 @@ const vegeArray = [
 ]
 
 function startGame() {
+    gameObj = new Game(5, 0, 5)
     startDiv.classList.add('hide')
     startTimer()
     startVegeCreation()
@@ -27,23 +36,72 @@ function startGame() {
 
 function startVegeCreation() {
     const v = setInterval(() => {
-        let index = Math.floor(Math.random() * vegeArray.length)
-        createVegetable(vegeArray[index].src, vegeArray[index].point)
-        if (time === 0) clearInterval(v)
-    }, 400)
+        if (!isPaused) {
+            let index = Math.floor(Math.random() * vegeArray.length)
+            let vege = createVegetable(vegeArray[index].src, vegeArray[index].point)
+
+            vege.onclick = () => {
+                vege.src = 'images/money.png'
+                gameObj.score += vegeArray[index].point
+                scoreDiv.textContent = gameObj.score
+            }
+
+            vegeGameUnits.push(vege)
+            if (time === 0) clearInterval(v)
+            removeItem(vege)
+        }
+    }, 1000)
 }
 
 function startTimer() {
     const s = setInterval(() => {
-        time -= 1
-        timerDiv.textContent = time
-        if (time === 0) clearInterval(s)
+        if (!isPaused) {
+            time -= 1
+            timerDiv.textContent = time
+            if (time === 0) clearInterval(s)
+        }
     }, 1000)
 }
 
 function startLocustCreation() {
     const l = setInterval(() => {
-        createLocust()
+        if (!isPaused) {
+            let loc = createLocust()
+            loc.onclick = () => {
+                gameObj.score -= 5
+                scoreDiv.textContent = gameObj.score
+            }
+        }
+            
         if (time === 0) clearInterval(l)
     }, 5000)
+}
+
+document.addEventListener("keydown", (e) => {
+    if (e.key == 'p'){
+        isPaused = !isPaused
+        isGamePaused(isPaused)
+        vegeGameUnits.forEach(item => {
+            item.style.animationPlayState = isPaused ? 'paused' : 'running'
+        })
+    }
+})
+
+function isGamePaused(pause) {
+    if (pause)
+        pausedDiv.classList.remove('hide')
+    else
+        pausedDiv.classList.add('hide')
+}
+
+function removeItem(ele) {
+    const s = setInterval(() => {
+        let rect = ele.getBoundingClientRect()
+        if (rect.y > window.innerHeight){
+            ele.remove()
+            vegeGameUnits = vegeGameUnits.filter(item => item !== ele)
+        }
+        if (vegeGameUnits.length == 0) clearInterval(s)
+    }, 10)
+    
 }

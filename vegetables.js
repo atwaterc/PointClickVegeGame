@@ -1,7 +1,4 @@
 const worldDiv = document.getElementById('world')
-const scoreDiv = document.getElementById('score')
-
-let score = 0
 
 export function createVegetable(src, pts) {
     const v = document.createElement('img')
@@ -11,15 +8,6 @@ export function createVegetable(src, pts) {
     v.draggable = false
     v.classList.add('vege')
 
-    v.onclick = () => {
-        v.src = 'images/money.png'
-        score += pts
-        scoreDiv.textContent = score
-    }
-
     worldDiv.append(v)
-
-    setTimeout(() => {
-        v.remove()
-    }, 6000)
+    return v
 }
